@@ -1,0 +1,33 @@
+{
+  "name": "antimatter",
+  "version": "1.0.0",
+  "description": "ship logging",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "babel-node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-latest": "^6.24.1",
+    "babel-runtime": "^6.23.0",
+    "commander": "^2.9.0",
+    "esdoc": "^0.5.2",
+    "eslint": "^4.0.0",
+    "eslint-config-mtechaccess": "^1.0.15",
+    "eslint-plugin-flowtype": "^2.34.0",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "flow-bin": "^0.48.0",
+    "fs-extra-promise": "^1.0.1",
+    "inquirer": "^3.1.0"
+  },
+  "dependencies": {
+    "winston": "^2.3.1"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 8
+  },
+  "extends": [
+    "eslint:recommended",
+    "mtechaccess",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "plugins": [
+    "promise"
+  ],
+  "env": {
+    "node": true,
+    "jquery": true
+  },
+  "rules": {
+    "no-console": "off",
+    "promise/always-return": "error",
+    "promise/no-return-wrap": "error",
+    "promise/param-names": "error",
+    "promise/catch-or-return": "error",
+    "promise/no-native": "off",
+    "promise/no-nesting": "warn",
+    "promise/no-promise-in-callback": "warn",
+    "promise/no-callback-in-promise": "warn",
+    "promise/avoid-new": "warn",
+    "promise/prefer-await-to-then": "warn",
+    "promise/prefer-await-to-callbacks": "warn"
+  },
+  "globals": {
+    "Promise": true,
+    "Visualiser": true,
+    "Dashboard": true,
+    "Column": true,
+    "Line": true,
+    "BaseHighChart": true,
+    "Highcharts": true,
+    "Utils": true,
+    "AppInstance": true
+  }
+}
