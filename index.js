@@ -51,6 +51,9 @@ async function _cargoMenu() {
   clear();
 
   term.cyan(`Cargo options:\n`);
+  if (ship) {
+    term.cyan(`Current ship: ${ship.name}\n`);
+  }
   const menu = [`List`, `Add`, `Update`, `Remove`, `Back`];
   term.singleColumnMenu(menu, async(err, response)=>{
     term(`\n`).eraseLineAfter.green(
@@ -75,6 +78,9 @@ async function _crewMenu() {
   clear();
 
   term.cyan(`Crew options:\n`);
+  if (ship) {
+    term.cyan(`Current ship: ${ship.name}\n`);
+  }
   const menu = [`List`, `Add`, `Update`, `Remove`, `Back`];
   term.singleColumnMenu(menu, async(err, response)=>{
     term(`\n`).eraseLineAfter.green(
@@ -99,6 +105,9 @@ async function _fuelMenu() {
   clear();
 
   term.cyan(`Fuel options:\n`);
+  if (ship) {
+    term.cyan(`Current ship: ${ship.name}\n`);
+  }
   const menu = [`List`, `Add`, `Update`, `Remove`, `Back`];
   term.singleColumnMenu(menu, async(err, response)=>{
     term(`\n`).eraseLineAfter.green(
@@ -144,6 +153,37 @@ async function _addShip() {
   });
 }
 
+
+async function _updateShip() {
+  clear();
+  term.red(`Update ship (${ship.name}):\n`);
+  const index = data.findIndex(item =>{
+    return item.name === ship.name;
+  });
+  term.cyan(`Name (${ship.name}):\n`);
+  term.inputField((err, input)=>{
+    if (input !== ``) {
+      ship.name = input;
+    }
+    term.cyan(`Fuel ${ship.fuel}:\n`);
+    term.inputField((err, input)=>{
+      if (input !== ``) {
+        ship.fuel = input;
+      }
+      term.cyan(`Save [Y|n]?\n`);
+      term.yesOrNo({yes: [`y`, `ENTER`],
+        no:  [`n`]}, (err, response)=>{
+        if (response) {
+          data= data[index]=ship.details;
+          _save();
+        }
+        _shipMenu();
+      });
+    });
+  });
+}
+
+
 function _selectShip() {
   clear();
   if (data.length) {
@@ -168,7 +208,41 @@ function _selectShip() {
       }
 
       if (response.selectedIndex < items.length) {
-        ship = data[response.selectedIndex];
+        ship=new lib.Ship(data[response.selectedIndex]);
+        _mainMenu();
+      }
+    });
+  } else {
+    _mainMenu();
+  }
+}
+function _removeShip() {
+  clear();
+  if (data.length) {
+    term.cyan(`Select ship to remove:\n`);
+    const items = data.map(item =>{
+      return item.name;
+    });
+
+    items.push(`Back`);
+
+
+    term.singleColumnMenu(items, async(err, response)=>{
+      term(`\n`).eraseLineAfter.green(
+        `#%s selected: %s (%s.%s)\n`,
+        response.selectedIndex,
+        response.selectedText,
+        response.x,
+        response.y
+      );
+      if (response.selectedText.toLowerCase() ===`back`) {
+        _mainMenu();
+      }
+
+      if (response.selectedIndex < items.length) {
+        data.splice(response.selectedIndex, 1);
+        ship=null;
+        await _save();
         _mainMenu();
       }
     });
@@ -179,7 +253,10 @@ function _selectShip() {
 async function _shipMenu() {
   clear();
 
-  term.cyan(`Ship options ${ship?ship.name:``}:\n`);
+  term.cyan(`Ship options:\n`);
+  if (ship) {
+    term.cyan(`Current ship: ${ship.name}\n`);
+  }
   const menu = [`Select`, `List`, `Add`, `Update`, `Remove`, `Back`];
   term.singleColumnMenu(menu, async(err, response)=>{
     term(`\n`).eraseLineAfter.green(
@@ -198,10 +275,10 @@ async function _shipMenu() {
         _addShip();
         break;
       case `update`:
-        _shipMenu();
+        _updateShip();
         break;
       case `remove`:
-        _shipMenu();
+        _removeShip();
         break;
       case `select`:
         _selectShip();
@@ -250,6 +327,9 @@ async function _mainMenu() {
   //-> jump
   clear();
   term.cyan(`Welcome to Antimatter!\n`);
+  if (ship) {
+    term.cyan(`Current ship: ${ship.name}\n`);
+  }
   term.cyan(`Select option:\n`);
   const menu = [`Ship`, `Cargo`, `Crew`, `Fuel`, `Exit`];
 
@@ -299,15 +379,12 @@ async function main() {
     //get data
     if (fs.existsSync(DOCK)) {
       await _load();
+      ship = new lib.Ship(data[0]);
     } else {
       data = [];
     }
 
-    //while (run) {
     await _mainMenu();
-    //}
-
-    //await _save();
   } catch (e) {
     log.error(`Antimatter leak:`, e);
   }

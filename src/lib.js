@@ -1,12 +1,16 @@
 'use strict';
 
 export class Ship {
-  constructor() {
-    this.name = ``;
-    this.fuel = 0;
-    this.capacity = 0;
-    this.crew = [];
-    this.cargo = [];
+  constructor(opts={name:     ``,
+    fuel:     0,
+    capacity: 0,
+    crew:     [],
+    cargo:    []}) {
+    this.name = opts.name;
+    this.fuel = opts.fuel;
+    this.capacity = opts.capacity;
+    this.crew = opts.crew;
+    this.cargo = opts.cargo;
   }
 
   get details() {
