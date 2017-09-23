@@ -3,8 +3,16 @@
   <head>
     <title>{{title}}</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript">
+    const Antimatter = {};
+    </script>
   </head>
   <body>
     {{{body}}}
+    <script type="text/javascript" src="javascripts/antimatter.js"></script>
+    <script type="text/javascript">
+    window.app = new Antimatter.App();
+  </script>
   </body>
+
 </html>
