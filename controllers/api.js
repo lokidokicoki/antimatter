@@ -5,10 +5,11 @@ const root = process.cwd();
 const manifest = path.join(root, `/data/ships.json`);
 /**
  * maps controller methods
-*/
+ */
 class Api {
   /**
    * Gets manifest
+   * a manifest 
    * @method get
    * @param {Object} req request object
    * @param {Object} res response object
